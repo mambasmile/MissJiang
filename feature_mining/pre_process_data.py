@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sbn
 
-def pre_process():
+def pre_process_ud(train_ud_mdl):
     train_ud_mdl = pd.read_csv('../data/lexin_train02/ud_mdl.csv',index_col=0)
 
     # #未来六个月的消费信息及dep
@@ -39,7 +39,9 @@ def pre_process():
     train_ud_mdl.pop('sch_fcompany_name')
     train_ud_mdl.pop('fschoolarea_name_md5')
 
-    plt.show(train_ud_mdl['fstd_num'].hist())
+    plt.show(np.log1p(train_ud_mdl['fstd_num']).hist())
+    train_ud_mdl.loc["fstd_num"]=np.log1p(train_ud_mdl['fstd_num'])
+    plt.show(np.log1p(train_ud_mdl['fstd_num']).hist())
     # print  pd.get_dummies(train_ud_mdl["fauth_source_type"],prefix="fauth_source_type").head()
 
     #进行one-hot编码
@@ -57,9 +59,9 @@ def pre_process():
 
     print all_ud_dummy_df.columns
     #检查数据缺失情况
-    print all_dummy_df.isnull().sum().sort_values(ascending=False).head(15)
-    print  all_dummy_df.isnull().sum().sum()
-    numeric_cols = all_dummy_df.columns[all_dummy_df.dtypes != 'object']
+    print all_ud_dummy_df.isnull().sum().sort_values(ascending=False).head(15)
+    print  all_ud_dummy_df.isnull().sum().sum()
+    numeric_cols = all_ud_dummy_df.columns[all_ud_dummy_df.dtypes != 'object']
     print numeric_cols
     #按照第一列纵向合并数据
     # res = pd.concat([df1, df2], axis=1, join_axes=[df1.index])
