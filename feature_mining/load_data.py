@@ -14,8 +14,8 @@ from sklearn.ensemble import BaggingRegressor
 from  sklearn.model_selection import  cross_val_score
 
 class data(object):
-    ud_mdl_file = unicode(r'../data/lexin_train02/特征处理后的ud_mdl.csv', 'utf-8')
-    all_data_file = unicode(r'../data/lexin_train02/总的训练数据.csv', 'utf-8')
+    ud_mdl_file = unicode(r'../input/lexin_train02/特征处理后的ud_mdl.csv', 'utf-8')
+    all_data_file = unicode(r'../input/lexin_train02/总的训练数据.csv', 'utf-8')
 
 
     def process_ud_mdl(self):
@@ -23,7 +23,7 @@ class data(object):
         处理ud文件
         :return:
         """
-        train_ud_mdl = pd.read_csv('../data/lexin_train02/ud_mdl.csv', index_col=0)
+        train_ud_mdl = pd.read_csv('../input/lexin_train02/ud_mdl.csv', index_col=0)
 
 
 
@@ -61,7 +61,7 @@ class data(object):
         :return:
         """
         # 读取拼接后的数据
-        path = unicode('../data/lexin_train02/训练数据集.csv', "utf8")
+        path = unicode('../input/lexin_train02/训练数据集.csv', "utf8")
         intermediate_data = pd.read_csv(path, index_col=0)
         print intermediate_data.columns
 
@@ -107,11 +107,11 @@ class data(object):
 
 
         # 使用xgboost进行预测
-        from xgboost import XGBClassifier
-        params = [ 3, 4, 5]
+        from xgboost import XGBRegressor
+        params = [ 3, 4, 5,6,7,8,9,10]
         test_scores = []
         for param in params:
-            clf = XGBClassifier(max_depth=param)
+            clf = XGBRegressor(max_depth=param)
             # 进行交叉验证
             test_score = np.sqrt(-cross_val_score(clf, X_train, y_train, cv=10, scoring='roc_auc'))
             test_scores.append(np.mean(test_score))
@@ -123,6 +123,8 @@ class data(object):
 
 
 
+data_process = data()
+data_process.process_ud_mdl()
 
 
 
@@ -137,6 +139,7 @@ class data(object):
 
 
 
+#   使用GBM进行预测
 
 # Import libraries:
 import pandas as pd
@@ -154,7 +157,7 @@ rcParams['figure.figsize'] = 12, 4
 
 
 class new_test():
-    all_data_file = unicode(r'../data/lexin_train02/总的训练数据.csv', 'utf-8')
+    all_data_file = unicode(r'../input/lexin_train02/总的训练数据.csv', 'utf-8')
     train = pd.read_csv(all_data_file, index_col=0)
     train.pop('actual_od_brw_1stm')
     train.pop('actual_od_brw_2stm')
@@ -274,5 +277,6 @@ class new_test():
                                    subsample=0.9, random_state=10, max_features=17)
         self.modelfit(gbm_tuned_1,self.train ,test, predictors)
 
+
 test = new_test()
-test.run()
+# test.run()
