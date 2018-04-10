@@ -20,7 +20,7 @@ if __name__  == '__main__':
 
     Login_url = 'https://github.com/login'
     login_email = 'mambasmile'
-    login_passwd = '930618caojin'
+    login_passwd = '-------'
 
     html = opener.open(Login_url).read()
     print html
